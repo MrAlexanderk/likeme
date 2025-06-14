@@ -1,4 +1,4 @@
-import { getAllPosts, insertPost } from "../models/postsModel.js";
+import { getAllPosts, insertPost, addLikeToPost, deletePost } from "../models/postsModel.js";
 
 export const getPosts = async (req, res) => {
     try {
@@ -24,5 +24,31 @@ export const createPost = async (req, res) => {
     } catch (error) {
         console.error("Error creating post:", error);
         res.status(500).send("Error creating post");
+    }
+};
+
+export const likePost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedPost = await addLikeToPost(id);
+        res.json(updatedPost);
+    } catch (error) {
+        console.error("Error liking post:", error);
+        res.status(500).send("Error liking post");
+    }
+};
+
+export const removePost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedPost = await deletePost(id);
+        if (deletedPost) {
+            res.json({ message: "Post deleted successfully", post: deletedPost });
+        } else {
+            res.status(404).send("Post not found");
+        }
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        res.status(500).send("Error deleting post");
     }
 };

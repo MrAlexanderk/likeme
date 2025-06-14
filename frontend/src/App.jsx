@@ -22,14 +22,15 @@ function App() {
     getPosts();
   };
 
-  // este método se utilizará en el siguiente desafío
   const like = async (id) => {
     await axios.put(urlBaseServer + `/posts/like/${id}`);
     getPosts();
   };
 
-  // este método se utilizará en el siguiente desafío
   const eliminarPost = async (id) => {
+    const confirmar = window.confirm("¿Estás seguro de que deseas eliminar este post?");
+    if (!confirmar) return;
+
     await axios.delete(urlBaseServer + `/posts/${id}`);
     getPosts();
   };
